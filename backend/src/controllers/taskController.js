@@ -7,8 +7,19 @@ const createTask = async (req, res) => {
     const task = await Task.create(req.body);
 
     res.status(201).json(task);
+
   } catch (error) {
-    res.status(500).json({ message: error.message });
+
+    
+    if (error.code === 11000) {
+      return res.status(400).json({
+        message: "Task title already exists",
+      });
+    }
+
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };
 
